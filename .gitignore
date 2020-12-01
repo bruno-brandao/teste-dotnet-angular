@@ -1,0 +1,10 @@
+.vscode
+bin
+obj
+.vs
+out
+Resources
+.fake
+.ionide
+publish
+esdata

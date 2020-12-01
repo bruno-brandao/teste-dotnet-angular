@@ -19,7 +19,7 @@ namespace AdcosApi.Repository
             _connectionString = _configuration.GetConnectionString("Default");
         }
 
-        public int Add(Cliente cliente)
+        public bool Add(Cliente cliente)
         {
             int count = 0;
             using (var con = new SqlConnection(_connectionString))
@@ -38,10 +38,10 @@ namespace AdcosApi.Repository
                 {
                     con.Close();
                 }
-                return count;
+                return count > 0;
             }
         }
-        public int Delete(int id)
+        public bool Delete(int id)
         {
             var count = 0;
             using (var con = new SqlConnection(_connectionString))
@@ -60,10 +60,10 @@ namespace AdcosApi.Repository
                 {
                     con.Close();
                 }
-                return count;
+                return count > 0;
             }
         }
-        public int Update(Cliente cliente)
+        public bool Update(Cliente cliente)
         {
             var count = 0;
             using (var con = new SqlConnection(_connectionString))
@@ -82,7 +82,7 @@ namespace AdcosApi.Repository
                 {
                     con.Close();
                 }
-                return count;
+                return count > 0;
             }
         }
         public Cliente GetCliente(int id)
@@ -93,15 +93,13 @@ namespace AdcosApi.Repository
                 try
                 {
                     con.Open();
-                    var query = "SELECT * FROM dbo.Clientes C" +
-                                "INNER JOIN dbo.Enderecos E ON E.Id = C.EnderecoId WHERE C.Id =" + id;
+                    var query = "SELECT * FROM dbo.Clientes C LEFT JOIN dbo.Enderecos E ON E.Id = C.EnderecoId WHERE C.Id =" + id;
                     cliente = con.Query<Cliente, Endereco, Cliente>(query,
                     map: (cliente, endereco) =>
                     {
                         cliente.Endereco = endereco;
                         return cliente;
-                    },
-                    splitOn: "Id,IdEndereco").FirstOrDefault();
+                    }).FirstOrDefault();
                 }
                 catch (Exception ex)
                 {
@@ -122,8 +120,13 @@ namespace AdcosApi.Repository
                 try
                 {
                     con.Open();
-                    var query = "SELECT * FROM Clientes";
-                    clientes = con.Query<Cliente>(query).ToList();
+                    var query = "SELECT * FROM dbo.Clientes C LEFT JOIN dbo.Enderecos E ON E.Id = C.EnderecoId";
+                    clientes = con.Query<Cliente, Endereco, Cliente>(query,
+                    map: (cliente, endereco) =>
+                    {
+                        cliente.Endereco = endereco;
+                        return cliente;
+                    }).ToList();
                 }
                 catch (Exception ex)
                 {

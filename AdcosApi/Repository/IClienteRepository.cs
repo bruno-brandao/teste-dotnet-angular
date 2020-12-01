@@ -5,10 +5,10 @@ namespace AdcosApi.Repository
 {
     public interface IClienteRepository
     {
-        int Add(Cliente cliente);
+        bool Add(Cliente cliente);
         List<Cliente> GetClientes();
         Cliente GetCliente(int id);
-        int Update(Cliente cliente);
-        int Delete(int id);
+        bool Update(Cliente cliente);
+        bool Delete(int id);
     }
 }
