@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using AdcosApi.Models;
+using AdcosApi.Domain;
 
 namespace AdcosApi.Repository
 {
@@ -10,5 +10,6 @@ namespace AdcosApi.Repository
         Cliente GetCliente(int id);
         bool Update(Cliente cliente);
         bool Delete(int id);
+        bool ClienteExiste(string documento);
     }
 }

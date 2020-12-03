@@ -1,6 +1,10 @@
 CREATE DATABASE Teste
-GO USE Teste
-GO CREATE TABLE dbo.Enderecos(
+GO 
+
+USE Teste
+GO 
+
+CREATE TABLE dbo.Enderecos(
         Id [int] IDENTITY(1, 1) NOT NULL,
         Logradouro VARCHAR(150) NOT NULL,
         Numero VARCHAR(10) NULL,
@@ -18,10 +22,13 @@ GO CREATE TABLE dbo.Enderecos(
             ALLOW_PAGE_LOCKS = ON
         ) ON [PRIMARY]
     )
-GO CREATE TABLE dbo.Clientes(
+GO 
+
+CREATE TABLE dbo.Clientes(
         Id int IDENTITY(1, 1) NOT NULL,
         Nome VARCHAR(150) NOT NULL,
         Documento VARCHAR(20) NULL,
+        CONSTRAINT AK_Documento UNIQUE(Documento),
         DataNascimento DATETIME NOT NULL,
         Telefone VARCHAR (20) NOT NULL,
         EnderecoId int NULL,
@@ -34,8 +41,10 @@ GO CREATE TABLE dbo.Clientes(
         ) ON [PRIMARY]
     )
 GO
+
 ALTER TABLE dbo.Clientes WITH CHECK
 ADD CONSTRAINT FK_Clientes_Endereco_EnderecoId FOREIGN KEY([EnderecoId]) REFERENCES dbo.Enderecos ([Id])
 GO
+
 ALTER TABLE dbo.Clientes CHECK CONSTRAINT FK_Clientes_Endereco_EnderecoId
 GO

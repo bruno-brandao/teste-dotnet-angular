@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace AdcosApi.Models
+namespace AdcosApi.Domain
 {
     public class Cliente
     {
@@ -15,6 +15,6 @@ namespace AdcosApi.Models
         public DateTime DataNascimento { get; set; }
         public string Telefone { get; set; }
         public int EnderecoId { get; set; }
-        public Endereco Endereco { get; set; }
+        public Endereco Endereco { get; set; } = new Endereco();
     }
 }
