@@ -1,36 +1,76 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-
-const baseUrl = 'http://localhost:5000/clientes';
+import { BehaviorSubject } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Cliente } from './../models/cliente';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ClientesService {
-  constructor(private http: HttpClient) {}
+  private readonly API_URL =
+    'http://brunobrandao-001-site1.dtempurl.com/clientes/';
+  dataChange: BehaviorSubject<Cliente[]> = new BehaviorSubject<Cliente[]>([]);
+  // Temporarily stores data from dialogs
+  dialogData: any;
 
-  getAll(): Observable<any> {
-    return this.http.get(baseUrl);
+  constructor(private httpClient: HttpClient) {}
+
+  get data(): Cliente[] {
+    return this.dataChange.value;
   }
 
-  get(id): Observable<any> {
-    return this.http.get(`${baseUrl}/${id}`);
+  getDialogData() {
+    return this.dialogData;
   }
 
-  create(data): Observable<any> {
-    return this.http.post(baseUrl, data);
+  /** CRUD METHODS */
+  getAllClientes(): void {
+    console.log("getAllClientes")
+    this.httpClient.get<Cliente[]>(this.API_URL).subscribe(
+      (data) => {
+        this.dataChange.next(data);
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error.name + ' ' + error.message);
+      }
+    );
   }
 
-  update(id, data): Observable<any> {
-    return this.http.put(`${baseUrl}/${id}`, data);
+  // ADD, POST METHOD
+  addItem(cliente: Cliente): void {
+    this.httpClient.post(this.API_URL, cliente).subscribe(
+      (data) => {
+        this.dialogData = cliente;
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error.name + ' ' + error.message);
+      }
+    );
+  }
+  // UPDATE, PUT METHOD
+  updateItem(cliente: Cliente): void {
+    this.httpClient.put(this.API_URL + cliente.id, cliente).subscribe(
+      (data) => {
+        this.dialogData = cliente;
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error.name + ' ' + error.message);
+      }
+    );
+  }
+  // DELETE METHOD
+  deleteItem(id: number): void {
+    this.httpClient.delete(this.API_URL + id).subscribe(
+      (data) => {
+        console.log(data['']);
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error.name + ' ' + error.message);
+      }
+    );
   }
 
-  delete(id): Observable<any> {
-    return this.http.delete(`${baseUrl}/${id}`);
-  }
-
-  existe(doc): Observable<any> {
-    return this.http.get(`${baseUrl}/existe/${doc}`);
-  }
+  // existe(doc): Observable<any> {
+  //   return this.http.get(`${this.API_URL}/existe/${doc}`);
+  // }
 }

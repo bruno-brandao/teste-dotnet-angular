@@ -1,23 +1,49 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AppRoutingModule } from './app-routing.module';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { MatToolbarModule } from '@angular/material/toolbar';
+
+import { ClientesService } from './services/clientes.service';
+
 import { AppComponent } from './app.component';
 import { AddClienteComponent } from './components/add-cliente/add-cliente.component';
-import { ClienteDetailsComponent } from './components/cliente-details/cliente-details.component';
-import { ClienteListComponent } from './components/cliente-list/cliente-list.component';
-
+import { DeleteClienteComponent } from './components/delete-cliente/delete-cliente.component';
+import { EditClienteComponent } from './components/edit-cliente/edit-cliente.component';
 @NgModule({
   declarations: [
     AppComponent,
     AddClienteComponent,
-    ClienteDetailsComponent,
-    ClienteListComponent,
+    DeleteClienteComponent,
+    EditClienteComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
-  providers: [],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    MatDialogModule,
+    FormsModule,
+    MatButtonModule,
+    MatInputModule,
+    MatIconModule,
+    MatSortModule,
+    MatTableModule,
+    MatToolbarModule,
+    MatPaginatorModule,
+    ReactiveFormsModule,
+    NoopAnimationsModule,
+  ],
+  providers: [ClientesService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
