@@ -8,12 +8,12 @@ import { Cliente } from './../models/cliente';
 })
 export class ClientesService {
   private readonly API_URL =
-    'http://brunobrandao-001-site1.dtempurl.com/clientes/';
+    'http://localhost:5000/clientes/';
   dataChange: BehaviorSubject<Cliente[]> = new BehaviorSubject<Cliente[]>([]);
   // Temporarily stores data from dialogs
   dialogData: any;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   get data(): Cliente[] {
     return this.dataChange.value;
@@ -37,15 +37,9 @@ export class ClientesService {
   }
 
   // ADD, POST METHOD
-  addItem(cliente: Cliente): void {
-    this.httpClient.post(this.API_URL, cliente).subscribe(
-      (data) => {
-        this.dialogData = cliente;
-      },
-      (error: HttpErrorResponse) => {
-        console.log(error.name + ' ' + error.message);
-      }
-    );
+  addItem(cliente: Cliente) {
+    const cl = { ...cliente, documento: cliente.documento.replace(/[^0-9]/g, '') };
+    return this.httpClient.post(this.API_URL, cl);
   }
   // UPDATE, PUT METHOD
   updateItem(cliente: Cliente): void {

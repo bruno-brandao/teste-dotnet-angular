@@ -11,6 +11,7 @@ import { ClientesService } from './services/clientes.service';
 import { AddClienteComponent } from './components/add-cliente/add-cliente.component';
 import { EditClienteComponent } from './components/edit-cliente/edit-cliente.component';
 import { DeleteClienteComponent } from './components/delete-cliente/delete-cliente.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-root',
@@ -19,12 +20,12 @@ import { DeleteClienteComponent } from './components/delete-cliente/delete-clien
 })
 export class AppComponent implements OnInit {
   displayedColumns = [
-    'id',
     'nome',
     'documento',
     'telefone',
     'dataNascimento',
-    'updated_at',
+    'cidade',
+    'estado',
     'actions',
   ];
   clienteDatabase: ClientesService | null;
@@ -36,7 +37,7 @@ export class AppComponent implements OnInit {
     public httpClient: HttpClient,
     public dialog: MatDialog,
     public dataService: ClientesService
-  ) {}
+  ) { }
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -59,10 +60,11 @@ export class AppComponent implements OnInit {
       if (result === 1) {
         // After dialog is closed we're doing frontend updates
         // For add we're just pushing a new row inside DataService
-        this.clienteDatabase.dataChange.value.push(
-          this.dataService.getDialogData()
-        );
-        this.refreshTable();
+        // this.clienteDatabase.dataChange.value.push(
+        //   this.dataService.getDialogData()
+        // );
+        // this.refreshTable();
+        this.loadData();
       }
     });
   }
@@ -74,7 +76,8 @@ export class AppComponent implements OnInit {
     documento: string,
     telefone: string,
     dataNascimento: string,
-    updated_at: string
+    cidade: string,
+    estado: string
   ) {
     this.id = id;
     // index row is used just for debugging proposes and can be removed
@@ -82,12 +85,13 @@ export class AppComponent implements OnInit {
     console.log(this.index);
     const dialogRef = this.dialog.open(EditClienteComponent, {
       data: {
-        id: id,
-        nome: nome,
-        documento: documento,
-        telefone: telefone,
-        dataNascimento: dataNascimento,
-        updated_at: updated_at,
+        id,
+        nome,
+        documento,
+        telefone,
+        dataNascimento,
+        cidade,
+        estado
       },
     });
 
@@ -117,7 +121,7 @@ export class AppComponent implements OnInit {
     this.index = i;
     this.id = id;
     const dialogRef = this.dialog.open(DeleteClienteComponent, {
-      data: { id: id, nome: nome, documento: documento, telefone: telefone },
+      data: { id, nome, documento, telefone },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -170,6 +174,10 @@ export class AppComponent implements OnInit {
         this.dataSource.filter = this.filter.nativeElement.value;
       });
   }
+
+  public formatDate(date: any): string {
+    return moment(date).format('DD/MM/YYYY');
+  }
 }
 
 export class ClienteDataSource extends DataSource<Cliente> {
@@ -218,7 +226,9 @@ export class ClienteDataSource extends DataSource<Cliente> {
               cliente.id +
               cliente.nome +
               cliente.documento +
-              cliente.telefone
+              cliente.telefone +
+              cliente.endereco.cidade +
+              cliente.endereco.estado
             ).toLowerCase();
             return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
           });
@@ -237,7 +247,7 @@ export class ClienteDataSource extends DataSource<Cliente> {
     );
   }
 
-  disconnect() {}
+  disconnect() { }
 
   /** Returns a sorted copy of the database data. */
   sortData(data: Cliente[]): Cliente[] {

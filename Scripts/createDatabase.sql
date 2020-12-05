@@ -29,7 +29,7 @@ CREATE TABLE dbo.Clientes(
         Nome VARCHAR(150) NOT NULL,
         Documento VARCHAR(20) NULL,
         CONSTRAINT AK_Documento UNIQUE(Documento),
-        DataNascimento DATETIME NOT NULL,
+        DataNascimento DATETIME2(7) NOT NULL,
         Telefone VARCHAR (20) NOT NULL,
         EnderecoId int NULL,
         CONSTRAINT PK_Clientes PRIMARY KEY CLUSTERED (Id ASC) WITH (

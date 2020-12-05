@@ -1,1 +1,205 @@
-<p>add-cliente works!</p>
+<div class="container">
+  <h3 mat-dialog-title>Adicionar novo cliente</h3>
+
+  <form class="mat-dialog-content" (ngSubmit)="submit()" #formControl="ngForm">
+    <mat-horizontal-stepper>
+      <mat-step label="Dados pessoais" state="data">
+        <div class="form">
+          <mat-form-field color="accent">
+            <input
+              matInput
+              #input
+              class="form-control"
+              placeholder="Nome"
+              [(ngModel)]="data.nome"
+              name="nome"
+              required
+            />
+            <mat-error *ngIf="formControl.invalid">{{
+              getErrorMessage()
+            }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!--Textarea for demo purposes-->
+        <div class="form">
+          <mat-form-field color="accent">
+            <input
+              matInput
+              #inputCpf
+              class="form-control"
+              placeholder="CPF"
+              [(ngModel)]="data.documento"
+              name="documento"
+              minlength="14"
+              maxlength="14"
+              required
+              [brmasker]="{mask:'000.000.000-00', len:14}"
+            />
+            <mat-error *ngIf="formControl.invalid">{{
+              getErrorMessage()
+            }}</mat-error>
+            <mat-hint align="end"
+              >{{ inputCpf.value?.length || 0 }}/14</mat-hint
+            >
+          </mat-form-field>
+        </div>
+
+        <!--Contains mat-hint for characters count and has maxLengt set-->
+        <div class="form">
+          <mat-form-field color="accent">
+            <input
+              #input
+              matInput
+              type="date"
+              class="form-control"
+              placeholder="Data de nascimento"
+              [(ngModel)]="data.dataNascimento"
+              name="dataNascimento"
+              required
+            />
+            <!-- 
+          [matDatepicker]="picker"<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker> -->
+            <mat-error *ngIf="formControl.invalid">{{
+              getErrorMessage()
+            }}</mat-error>
+            <!-- <mat-hint align="end">{{ inputstate.value?.length || 0 }}/10</mat-hint> -->
+          </mat-form-field>
+        </div>
+
+        <div class="form">
+          <mat-form-field color="accent">
+            <input
+              matInput
+              placeholder="Telefone"
+              [(ngModel)]="data.telefone"
+              name="telefone"
+              [brmasker]="{phone: true}"
+            />
+          </mat-form-field>
+        </div>
+        <div>
+          <button type="button" mat-button matStepperNext>Próximo</button>
+        </div>
+      </mat-step>
+      <mat-step label="Endereço" state="endereco">
+        <div class="form">
+          <mat-form-field color="accent">
+            <input
+              #input
+              matInput
+              placeholder="CEP"
+              [(ngModel)]="data.endereco.cep"
+              name="cep"
+              (keyup)="getAddress()"
+              [brmasker]="{ mask: '00.000-000', len: 10 }"
+              required
+            />
+            <mat-error *ngIf="formControl.invalid">{{
+              getErrorMessage()
+            }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form">
+          <mat-form-field color="accent">
+            <input
+              #input
+              matInput
+              placeholder="Rua"
+              [(ngModel)]="data.endereco.logradouro"
+              name="logradouro"
+              required
+            />
+            <mat-error *ngIf="formControl.invalid">{{
+              getErrorMessage()
+            }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form">
+          <mat-form-field color="accent">
+            <input
+              #input
+              matInput
+              placeholder="Número"
+              [(ngModel)]="data.endereco.numero"
+              name="numero"
+              required
+            />
+            <mat-error *ngIf="formControl.invalid">{{
+              getErrorMessage()
+            }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form">
+          <mat-form-field hintLabel="Max 150 caracteres" color="accent">
+            <input
+              matInput
+              #inputComp
+              placeholder="Coplemento"
+              maxlength="150"
+              [(ngModel)]="data.endereco.complemento"
+              name="complemento"
+            />
+            <mat-error *ngIf="formControl.invalid">{{
+              getErrorMessage()
+            }}</mat-error>
+            <mat-hint align="end"
+              >{{ inputComp.value?.length || 0 }}/150</mat-hint
+            >
+          </mat-form-field>
+        </div>
+
+        <div class="form">
+          <mat-form-field color="accent">
+            <input
+              #input
+              matInput
+              placeholder="Bairro"
+              [(ngModel)]="data.endereco.bairro"
+              name="bairro"
+              required
+            />
+            <mat-error *ngIf="formControl.invalid">{{
+              getErrorMessage()
+            }}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form">
+          <mat-form-field color="accent">
+            <input
+              #input
+              matInput
+              placeholder="Cidade"
+              [(ngModel)]="data.endereco.cidade"
+              name="cidade"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="form">
+          <mat-form-field color="accent">
+            <input
+              #input
+              matInput
+              placeholder="Estado"
+              [(ngModel)]="data.endereco.estado"
+              name="estado"
+            />
+          </mat-form-field>
+        </div>
+
+        <div mat-dialog-actions>
+          <button mat-button [type]="submit" [disabled]="!formControl.valid">
+            Save
+          </button>
+          <button mat-button (click)="onNoClick()" tabindex="-1">Cancel</button>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </form>
+</div>

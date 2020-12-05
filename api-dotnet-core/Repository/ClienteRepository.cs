@@ -56,7 +56,7 @@ namespace AdcosApi.Repository
                             cmd = new SqlCommand(queryCliente, con, transaction);
                             cmd.Parameters.AddWithValue("@Nome", cliente.Nome);
                             cmd.Parameters.AddWithValue("@Documento", cliente.Documento);
-                            cmd.Parameters.AddWithValue("@DataNascimento", cliente.DataNascimento.ToString("yyyy-MM-dd HH:mm:ss"));
+                            cmd.Parameters.AddWithValue("@DataNascimento", cliente.DataNascimento.ToString("yyyy-MM-dd"));
                             cmd.Parameters.AddWithValue("@Telefone", cliente.Telefone);
                             cmd.Parameters.AddWithValue("@EnderecoId", cliente.EnderecoId);
                             count = cmd.ExecuteNonQuery();

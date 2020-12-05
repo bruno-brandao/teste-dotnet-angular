@@ -4,6 +4,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { CommonModule } from '@angular/common';
+
+import { ToastrModule } from 'ngx-toastr';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -13,7 +16,10 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatStepperModule } from '@angular/material/stepper';
 
+import { BrMaskerModule } from 'br-mask';
 import { ClientesService } from './services/clientes.service';
 
 import { AppComponent } from './app.component';
@@ -40,10 +46,18 @@ import { EditClienteComponent } from './components/edit-cliente/edit-cliente.com
     MatTableModule,
     MatToolbarModule,
     MatPaginatorModule,
+    MatDatepickerModule,
+    MatStepperModule,
     ReactiveFormsModule,
     NoopAnimationsModule,
+    BrMaskerModule,
+    ToastrModule.forRoot({
+      timeOut: 8000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+    })
   ],
   providers: [ClientesService],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
