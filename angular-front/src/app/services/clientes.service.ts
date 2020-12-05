@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Cliente } from './../models/cliente';
 
@@ -19,13 +19,12 @@ export class ClientesService {
     return this.dataChange.value;
   }
 
-  getDialogData() {
+  getDialogData(): any {
     return this.dialogData;
   }
 
   /** CRUD METHODS */
   getAllClientes(): void {
-    console.log("getAllClientes")
     this.httpClient.get<Cliente[]>(this.API_URL).subscribe(
       (data) => {
         this.dataChange.next(data);
@@ -37,23 +36,17 @@ export class ClientesService {
   }
 
   // ADD, POST METHOD
-  addItem(cliente: Cliente) {
+  addItem(cliente: Cliente): Observable<any> {
     const cl = { ...cliente, documento: cliente.documento.replace(/[^0-9]/g, '') };
     return this.httpClient.post(this.API_URL, cl);
   }
   // UPDATE, PUT METHOD
-  updateItem(cliente: Cliente): void {
-    this.httpClient.put(this.API_URL + cliente.id, cliente).subscribe(
-      (data) => {
-        this.dialogData = cliente;
-      },
-      (error: HttpErrorResponse) => {
-        console.log(error.name + ' ' + error.message);
-      }
-    );
+  updateItem(cliente: Cliente): Observable<any> {
+    const cl = { ...cliente, documento: cliente.documento.replace(/[^0-9]/g, '') };
+    return this.httpClient.put(this.API_URL + cliente.id, cl);
   }
   // DELETE METHOD
-  deleteItem(id: number) {
+  deleteItem(id: number): Observable<any> {
     return this.httpClient.delete(this.API_URL + id);
   }
 

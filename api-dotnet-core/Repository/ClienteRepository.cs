@@ -135,10 +135,7 @@ namespace AdcosApi.Repository
                             cmd.Parameters.AddWithValue("@Estado", cliente.Endereco.Estado);
                             cmd.Parameters.AddWithValue("@UF", cliente.Endereco.UF);
                             cmd.Parameters.AddWithValue("@CEP", cliente.Endereco.CEP);
-
-                            var idEndereco = cmd.ExecuteScalar();
-
-                            cliente.EnderecoId = int.Parse(idEndereco.ToString());
+                            count = cmd.ExecuteNonQuery();
 
                             var queryCliente = $@"UPDATE Clientes 
                                                     SET Nome = @Nome, 
@@ -148,7 +145,7 @@ namespace AdcosApi.Repository
 
                             cmd = new SqlCommand(queryCliente, con, transaction);
                             cmd.Parameters.AddWithValue("@Nome", cliente.Nome);
-                            cmd.Parameters.AddWithValue("@DataNascimento", cliente.DataNascimento.ToString("yyyy-MM-dd HH:mm:ss"));
+                            cmd.Parameters.AddWithValue("@DataNascimento", cliente.DataNascimento.ToString("yyyy-MM-dd"));
                             cmd.Parameters.AddWithValue("@Telefone", cliente.Telefone);
                             count = cmd.ExecuteNonQuery();
                             transaction.Commit();

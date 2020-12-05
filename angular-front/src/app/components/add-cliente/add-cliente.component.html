@@ -1,5 +1,5 @@
 <div class="container">
-  <h3 mat-dialog-title>Adicionar novo cliente</h3>
+  <h3 mat-dialog-title>{{ data.id ? 'Editar cliente' : 'Adicionar novo cliente'}}</h3>
 
   <form class="mat-dialog-content" (ngSubmit)="submit()" #formControl="ngForm">
     <mat-horizontal-stepper>
@@ -34,6 +34,7 @@
               minlength="14"
               maxlength="14"
               required
+              [disabled]="data.id"
               [brmasker]="{mask:'000.000.000-00', len:14}"
             />
             <mat-error *ngIf="formControl.invalid">{{

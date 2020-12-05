@@ -6,6 +6,8 @@ import { Cliente } from 'src/app/models/cliente';
 import { Endereco } from 'src/app/models/endereco';
 import { ConsultaCepService } from 'src/app/services/consulta-cep.service';
 import { ToastrService } from 'ngx-toastr';
+import { BrMaskDirective, BrMaskModel } from 'br-mask';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-add-cliente',
@@ -24,10 +26,20 @@ export class AddClienteComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: Cliente,
     private cepService: ConsultaCepService,
     public dataService: ClientesService,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService,
+    public brMask: BrMaskDirective) {
+    if (this.data.id) {
+      const config: BrMaskModel = new BrMaskModel();
+      config.person = true;
+      this.data.documento = this.brMask.writeCreateValue(this.data.documento, config);
+      this.data.dataNascimento = moment(this.data.dataNascimento).format('YYYY-MM-DD');
+    }
+  }
 
   ngOnInit(): void {
-    this.data.endereco = new Endereco();
+    if (!this.data.id) {
+      this.data.endereco = new Endereco();
+    }
   }
 
   getErrorMessage(): any {
@@ -37,16 +49,29 @@ export class AddClienteComponent implements OnInit {
   }
 
   submit(): any {
-    this.dataService.addItem(this.data).subscribe(
-      (data) => {
-        this.dataService.dialogData = data;
-        this.toastr.success('Cliente criado com sucesso!');
-        this.dialogRef.close(1);
-      },
-      (error) => {
-        this.toastr.error(error?.error?.mensagem || error.message);
-      }
-    );
+    if (this.data.id) {
+      this.dataService.updateItem(this.data).subscribe(
+        (data) => {
+          this.dataService.dialogData = data;
+          this.toastr.success('Cliente alterado com sucesso!');
+          this.dialogRef.close(1);
+        },
+        (error) => {
+          this.toastr.error(error?.error?.mensagem || error.message);
+        }
+      );
+    } else {
+      this.dataService.addItem(this.data).subscribe(
+        (data) => {
+          this.dataService.dialogData = data;
+          this.toastr.success('Cliente criado com sucesso!');
+          this.dialogRef.close(1);
+        },
+        (error) => {
+          this.toastr.error(error?.error?.mensagem || error.message);
+        }
+      );
+    }
   }
 
   onNoClick(): void {
@@ -60,12 +85,16 @@ export class AddClienteComponent implements OnInit {
   getAddress(): void {
     this.cepService.consultaCEP(this.data.endereco.cep).subscribe(
       (data: any) => {
-        this.data.endereco.logradouro = data.logradouro;
-        this.data.endereco.complemento = data.complemento;
-        this.data.endereco.bairro = data.bairro;
-        this.data.endereco.cidade = data.localidade;
-        this.data.endereco.estado = this.cepService.getStateName(data.uf);
-        this.data.endereco.uf = data.uf;
+        if (!data.erro) {
+          this.data.endereco.logradouro = data.logradouro;
+          this.data.endereco.complemento = data.complemento;
+          this.data.endereco.bairro = data.bairro;
+          this.data.endereco.cidade = data.localidade;
+          this.data.endereco.estado = this.cepService.getStateName(data.uf);
+          this.data.endereco.uf = data.uf;
+        } else {
+          this.toastr.error('Cep não encontrado');
+        }
       },
       (error) => {
         this.toastr.error('Cep não encontrado');

@@ -71,15 +71,7 @@
           mat-icon-button
           color="accent"
           (click)="
-            startEdit(
-              i,
-              row.id,
-              row.nome,
-              row.documento,
-              row.telefone,
-              row.dataNascimento,
-              row.updated_at
-            )
+            startEdit(row)
           "
         >
           <mat-icon aria-label="Edit">edit</mat-icon>

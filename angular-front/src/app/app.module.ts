@@ -19,7 +19,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatStepperModule } from '@angular/material/stepper';
 
-import { BrMaskerModule } from 'br-mask';
+import { BrMaskDirective, BrMaskerModule } from 'br-mask';
 import { ClientesService } from './services/clientes.service';
 
 import { AppComponent } from './app.component';
@@ -57,7 +57,7 @@ import { EditClienteComponent } from './components/edit-cliente/edit-cliente.com
       preventDuplicates: true,
     })
   ],
-  providers: [ClientesService],
+  providers: [ClientesService, BrMaskDirective],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

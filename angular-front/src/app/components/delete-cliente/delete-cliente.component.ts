@@ -27,13 +27,13 @@ export class DeleteClienteComponent implements OnInit {
     this.dataService.deleteItem(this.data.id).subscribe(
       (data) => {
         this.dataService.dialogData = data;
-        this.toastr.success('Cliente deletado com sucesso!');
+        this.toastr.success('Cliente apagado com sucesso!');
         this.dialogRef.close(1);
       },
       (error) => {
         this.toastr.error(error?.error?.mensagem || error.message);
       }
-    );;
+    );
   }
 
 }

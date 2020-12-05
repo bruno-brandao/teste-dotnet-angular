@@ -54,12 +54,10 @@ namespace AdcosApi.Controllers
                 if (id != cliente.Id)
                     return BadRequest();
 
-                var clienteDb = _clienteRepository.GetCliente(id);
-
-                if (clienteDb == null)
+                if (!_clienteRepository.ClienteExiste(cliente.Id))
                     return NotFound();
 
-                if (_clienteRepository.Update(clienteDb))
+                if (!_clienteRepository.Update(cliente))
                     throw new Exception("Ocorreu um erro ao atualizar o cliente");
 
                 return NoContent();

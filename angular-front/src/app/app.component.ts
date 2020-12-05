@@ -43,70 +43,35 @@ export class AppComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild('filter', { static: true }) filter: ElementRef;
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadData();
   }
 
-  refresh() {
+  refresh(): void {
     this.loadData();
   }
 
-  addNew() {
+  addNew(): void {
     const dialogRef = this.dialog.open(AddClienteComponent, {
       data: { cliente: Cliente },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 1) {
-        // After dialog is closed we're doing frontend updates
-        // For add we're just pushing a new row inside DataService
-        // this.clienteDatabase.dataChange.value.push(
-        //   this.dataService.getDialogData()
-        // );
-        // this.refreshTable();
         this.loadData();
       }
     });
   }
 
-  startEdit(
-    i: number,
-    id: number,
-    nome: string,
-    documento: string,
-    telefone: string,
-    dataNascimento: string,
-    cidade: string,
-    estado: string
-  ) {
-    this.id = id;
-    // index row is used just for debugging proposes and can be removed
-    this.index = i;
-    console.log(this.index);
-    const dialogRef = this.dialog.open(EditClienteComponent, {
-      data: {
-        id,
-        nome,
-        documento,
-        telefone,
-        dataNascimento,
-        cidade,
-        estado
-      },
+  startEdit(cliente: any): void {
+    const data = { ...cliente };
+    const dialogRef = this.dialog.open(AddClienteComponent, {
+      data
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 1) {
-        // When using an edit things are little different, firstly we find record inside DataService by id
-        const foundIndex = this.clienteDatabase.dataChange.value.findIndex(
-          (x) => x.id === this.id
-        );
-        // Then you update that record using data from dialogData (values you enetered)
-        this.clienteDatabase.dataChange.value[
-          foundIndex
-        ] = this.dataService.getDialogData();
-        // And lastly refresh table
-        this.refreshTable();
+        this.loadData();
       }
     });
   }
@@ -117,7 +82,7 @@ export class AppComponent implements OnInit {
     nome: string,
     documento: string,
     telefone: string
-  ) {
+  ): void {
     this.index = i;
     this.id = id;
     const dialogRef = this.dialog.open(DeleteClienteComponent, {
@@ -136,7 +101,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  private refreshTable() {
+  private refreshTable(): void {
     // Refreshing table using paginator
     this.paginator._changePageSize(this.paginator.pageSize);
   }
@@ -157,7 +122,7 @@ export class AppComponent implements OnInit {
       this.dataSource.filter = this.filter.nativeElement.value;
     }*/
 
-  public loadData() {
+  public loadData(): void {
     this.clienteDatabase = new ClientesService(this.httpClient);
     this.dataSource = new ClienteDataSource(
       this.clienteDatabase,
@@ -247,7 +212,7 @@ export class ClienteDataSource extends DataSource<Cliente> {
     );
   }
 
-  disconnect() { }
+  disconnect(): void { }
 
   /** Returns a sorted copy of the database data. */
   sortData(data: Cliente[]): Cliente[] {

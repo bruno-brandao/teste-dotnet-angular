@@ -11,5 +11,6 @@ namespace AdcosApi.Repository
         bool Update(Cliente cliente);
         bool Delete(int id);
         bool ClienteExiste(string documento);
+        bool ClienteExiste(int id);
     }
 }
