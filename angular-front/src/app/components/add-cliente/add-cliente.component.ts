@@ -58,14 +58,19 @@ export class AddClienteComponent implements OnInit {
   }
 
   getAddress(): void {
-    this.cepService.consultaCEP(this.data.endereco.cep).subscribe((data: any) => {
-      this.data.endereco.logradouro = data.logradouro;
-      this.data.endereco.complemento = data.complemento;
-      this.data.endereco.bairro = data.bairro;
-      this.data.endereco.cidade = data.localidade;
-      this.data.endereco.estado = this.cepService.getStateName(data.uf);
-      this.data.endereco.uf = data.uf;
-    });
+    this.cepService.consultaCEP(this.data.endereco.cep).subscribe(
+      (data: any) => {
+        this.data.endereco.logradouro = data.logradouro;
+        this.data.endereco.complemento = data.complemento;
+        this.data.endereco.bairro = data.bairro;
+        this.data.endereco.cidade = data.localidade;
+        this.data.endereco.estado = this.cepService.getStateName(data.uf);
+        this.data.endereco.uf = data.uf;
+      },
+      (error) => {
+        this.toastr.error('Cep não encontrado');
+      }
+    );
   }
 
 

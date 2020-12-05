@@ -53,15 +53,8 @@ export class ClientesService {
     );
   }
   // DELETE METHOD
-  deleteItem(id: number): void {
-    this.httpClient.delete(this.API_URL + id).subscribe(
-      (data) => {
-        console.log(data['']);
-      },
-      (error: HttpErrorResponse) => {
-        console.log(error.name + ' ' + error.message);
-      }
-    );
+  deleteItem(id: number) {
+    return this.httpClient.delete(this.API_URL + id);
   }
 
   // existe(doc): Observable<any> {

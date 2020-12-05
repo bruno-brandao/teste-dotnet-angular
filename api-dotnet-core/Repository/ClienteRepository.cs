@@ -88,7 +88,7 @@ namespace AdcosApi.Repository
                 try
                 {
                     con.Open();
-                    var query = $"DELETE FROM Produtos WHERE ProdutoId = {id}";
+                    var query = $"DELETE FROM Clientes WHERE Id = {id}";
                     count = con.Execute(query);
                 }
                 catch (Exception ex)
