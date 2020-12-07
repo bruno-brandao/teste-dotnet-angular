@@ -43,7 +43,7 @@ CREATE TABLE dbo.Clientes(
 GO
 
 ALTER TABLE dbo.Clientes WITH CHECK
-ADD CONSTRAINT FK_Clientes_Endereco_EnderecoId FOREIGN KEY([EnderecoId]) REFERENCES dbo.Enderecos ([Id])
+ADD CONSTRAINT FK_Clientes_Endereco_EnderecoId FOREIGN KEY([EnderecoId]) REFERENCES dbo.Enderecos ([Id]) ON DELETE CASCADE
 GO
 
 ALTER TABLE dbo.Clientes CHECK CONSTRAINT FK_Clientes_Endereco_EnderecoId

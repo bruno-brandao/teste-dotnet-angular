@@ -32,6 +32,7 @@ namespace AdcosApi
                 options.AddPolicy("AllowOrigin",
                     builder => builder
                                 .WithOrigins("http://localhost:4200")
+                                .WithOrigins("https://teste-ba913.web.app")
                                 .AllowAnyHeader()
                                 .AllowAnyMethod()
                                 .AllowCredentials());
