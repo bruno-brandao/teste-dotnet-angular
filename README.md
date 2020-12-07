@@ -20,4 +20,4 @@ O backend foi desenvolvido utilizando .NET CORE. Para acesso aos dados foi utili
 
 O frontend foi desenvolvido utilizando o framework Angular. O frontend está desacoplado do backend e consume as funcionalidades via API. O projeto se encontra na pasta "angular-front".
 
-Para cadastro do CEP foi utilizado a API ViaCep.
+Para cadastro do endereço foi utilizado a API ViaCep.
