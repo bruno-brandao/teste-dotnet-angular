@@ -8,7 +8,7 @@ import { Cliente } from './../models/cliente';
 })
 export class ClientesService {
   private readonly API_URL =
-    'http://localhost:5000/clientes/';
+    'http://brunobrandao-001-site1.dtempurl.com/clientes/';
   dataChange: BehaviorSubject<Cliente[]> = new BehaviorSubject<Cliente[]>([]);
   // Temporarily stores data from dialogs
   dialogData: any;
