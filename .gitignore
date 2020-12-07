@@ -6,6 +6,7 @@ out
 Resources
 .fake
 .ionide
+.firebase
 publish
 esdata
 PublishProfiles
